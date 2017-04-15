@@ -5,8 +5,13 @@ date: "April 13, 2017"
 output: html_document
 ---
 
-##Reading inputs
+##Download, Unzip and Read inputs
 ```{r warning=FALSE, message=FALSE}
+url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'
+download.file(url = url,destfile = 'dataset.zip')
+
+unzip(zipfile = 'dataset.zip')
+
 #train.x <- read.fwf(file = 'UCI HAR Dataset\\train\\x_train.txt',widths = rep(16,561))
 train.x <- readRDS('train_x.rda')
 head(train.x[,1:5],5)

@@ -1,3 +1,8 @@
+url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'
+download.file(url = url,destfile = 'dataset.zip')
+
+unzip(zipfile = 'dataset.zip')
+
 #train.x <- read.fwf(file = 'UCI HAR Dataset\\train\\x_train.txt',widths = rep(16,561))
 train.x <- readRDS('train_x.rda')
 head(train.x[,1:5],5)
@@ -68,4 +73,7 @@ tidy.summary <- merge(tidy.summary,activity_labels,by.x='act_id',by.y='id')
 ts_order <- order(tidy.summary$subject)
 tidy.summary[ts_order[1:5],c('activity','subject','tBodyAcc-mean()-Y','tBodyAcc-mean()-Z')]
 
-write.table(tidy.summary,file = 'tidy_summary.txt',row.names = FALSE)
+hide_cols <- grep("Activity|subject",names(tidy.summary))
+ntidy.summary <- data.frame(subject = tidy.summary[,'subject'],Activity = tidy.summary[,'activity'], tidy.summary[,-hide_cols])
+
+write.table(ntidy.summary,file = 'tidy_summary.txt',row.names = FALSE)
