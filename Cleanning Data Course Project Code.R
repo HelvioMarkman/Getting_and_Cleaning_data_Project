@@ -32,7 +32,7 @@ names(train.x)=features[,2]
 
 names(test.x)=features[,2]
 
-means_coluns = grepl("mean",names(train.x))
+means_coluns = grepl("mean|std",names(train.x))
 train.x.means <- train.x[,means_coluns]
 test.x.means <- test.x[,means_coluns]
 head(train.x.means[,1:5])
@@ -66,5 +66,6 @@ hide_cols <- (names(tidy) != 'activity')
 tidy.summary <- aggregate(tidy[,hide_cols],by= list(tidy$act_id, tidy$subject),mean)
 tidy.summary <- merge(tidy.summary,activity_labels,by.x='act_id',by.y='id')
 ts_order <- order(tidy.summary$subject)
-cbind(tidy.summary[ts_order,'activity.y'],tidy.summary[ts_order,'subject'])
+tidy.summary[ts_order[1:5],c('activity','subject','tBodyAcc-mean()-Y','tBodyAcc-mean()-Z')]
 
+write.table(tidy.summary,file = 'tidy_summary.txt',row.names = FALSE)
